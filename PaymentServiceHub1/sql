@@ -1,0 +1,9 @@
+select * from cust_card;
+
+select * from users;
+
+select * from cust;
+
+select c.PAN, c.token_exp_date, d.URN from cust a inner join cust_card b on b.cust_id = a.id inner join card_token_vault c on c.PAN = b.PAN_NUM inner join cust_urn_token d on  d.token_id = c.id inner join users e on e.username = a.login_id where e.username = 'Pon' order by c.PAN;
+
+update cust set login_id = 'Pon';

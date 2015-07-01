@@ -1,0 +1,66 @@
+
+<div class="container">
+    <h1><span class="label label-info">Bank Site - Generate Payment Unique Reference Number</span></h1>
+
+	<form novalidate="novalidate" class="form-horizontal">
+	<div class="row">
+			<div class="two columns">
+				<label for="cards">Cards</label>
+			</div>
+			<div class="ten columns">
+				<select class="u-custom-select" id="cards">
+					<option value="Option 1">Please select...</option>
+					<option value="Option 2">2345-7656-8909-6785</option>
+					<option value="Option 2">2345-7656-8909-6785</option>
+				</select>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="inputCardNumber">Card Number</label>
+
+			<div class="controls">
+				<input type="text" id="inputCardNumber" ng-model="card.cardNum"
+					placeholder="Card Number" />
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="inputCardHolderName">Card
+				holder Name:</label>
+
+			<div class="controls">
+				<input type="text" id="inputHolderName" ng-model="card.name"
+					placeholder="Card Holder Name" />
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="inputCardExpiryDate">Expiry
+				Date:</label>
+
+			<div class="controls">
+				<input type="text" id="inputCardExpiryDate" ng-model="card.expDate"
+					placeholder="Expiry Date" />
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="inputCvv">CVV:</label>
+
+			<div class="controls">
+				<input type="text" id="inputCvv" ng-model="card.cvv"
+					placeholder="CVV" />
+			</div>
+		</div>
+		<div class="control-group">
+			<div class="controls">
+				<a ng-click="generateUrn(card)" class="btn btn-small btn-primary">Generate
+					URN</a>
+			</div>
+		</div>
+		
+		
+	</form>
+
+	<div ng-show="message != null">
+		<b><span class="label label-primary">Unique Reference
+				Number :</span><span class="label label-success">{{message}}</span></b>
+	</div>
+</div>

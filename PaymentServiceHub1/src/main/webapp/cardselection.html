@@ -1,0 +1,66 @@
+<!--URN modal-->
+<div id="urnModal" class="modal show" tabindex="-1" role="dialog"
+	aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">×</button>
+				<h3 class="text-center">Select Your Card & Pay</h3>
+			</div>
+			<div class="modal-body">
+				<form name="urnForm" class="form col-md-12 center-block">
+					<div class="form-group">
+						<select name="cardNum" class="form-control input-lg" required
+							ng-model="card.cardNum"
+							ng-options="cardNum for cardNum in custCards">
+							<option value="">Select Card</option>
+						</select> <span style="color: red"
+							ng-show="urnForm.cardNum.$dirty && urnForm.cardNum.$invalid">
+							<span ng-show="urnForm.cardNum.$error.required">PAN number
+								is required</span>
+						</span>
+						<!--  <input type="text" class="form-control input-lg"
+							placeholder="Card Number" ng-model="card.cardNum" maxlength="16">-->
+					</div>
+
+					<table st-table="rowCollection" class="table">
+						<thead>
+							<tr>
+								<th></th>
+								<th st-sort="firstName">first name</th>
+								<th st-sort="lastName">last name</th>
+								<th st-sort="birthDate">birth date</th>
+								<th st-sort="balance">balance</th>
+								<th>email</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="row in rowCollection">
+								<td cs-select="row"></td>
+								<td>{{row.firstName | uppercase}}</td>
+								<td>{{row.lastName}}</td>
+								<td>{{row.birthDate | date}}</td>
+								<td>{{row.balance | currency}}</td>
+								<td><a ng-href="mailto:{{row.email}}">email</a></td>
+							</tr>
+						</tbody>
+					</table>
+
+					<div class="control-group">
+						<div class="controls">
+							<a ng-click="generateUrn(card)" class="btn btn-small btn-primary">Continue
+							</a>
+						</div>
+					</div>
+
+				</form>
+				<div class="modal-footer">
+					<div class="col-md-12">
+						<button class="btn" data-dismiss="modal" aria-hidden="true"
+							ng-click="login()">Cancel</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>

@@ -1,0 +1,31 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>JS Client Demo</title>
+
+<script type="text/javascript">
+	function redirect() {
+		var url = "http://localhost:8081/vendor/vendor.html?urn=";
+		url += document.getElementById('urn').value + "&transactionDetails=2345dcfkvvmfckfnfm";
+		location.href = url;
+	}
+</script>
+</head>
+<body>
+	<form action="" method="post" onsubmit="redirect();return false;">
+		<div>
+			<h1>Pay using Premium Bank</h1>
+			<hr>
+				Enter Payment Token Reference Number: <input id="urn" type="text"
+					name="urn"></input>
+			<input type="submit" value="Pay"></input>
+			<h4>
+				<p>Payment Token will be displayed if oauth successful</p>
+			</h4>
+			<H3>
+				<p id="message" />
+			</H3>
+		</div>
+	</form>
+</body>
+</html>

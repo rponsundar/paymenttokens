@@ -1,0 +1,63 @@
+<!--URN modal-->
+<div id="urnModal" class="modal show" tabindex="-1" role="dialog"
+	aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">×</button>
+				<h3 class="text-center">Generate Payment Token Unique Reference
+					Number</h3>
+			</div>
+			<div class="modal-body">
+				<form name="urnForm" class="form col-md-12 center-block">
+					<div class="form-group">
+						<select 
+							name="cardNum" class="form-control input-lg" required
+							ng-model="card.cardNum"
+							ng-options="cardNum for cardNum in custCards">
+							<option  value="">Select PAN NO</option>
+						</select>
+						  <span style="color:red" ng-show="urnForm.cardNum.$dirty && urnForm.cardNum.$invalid">
+                            <span ng-show="urnForm.cardNum.$error.required">PAN number is required</span>
+                          </span>
+						<!--  <input type="text" class="form-control input-lg"
+							placeholder="Card Number" ng-model="card.cardNum" maxlength="16">-->
+					</div>
+					<div class="form-group">
+						<input type="text" class="form-control input-lg" name="expDate"
+							placeholder="Expiry Date (MM/YYYY)" ng-model="card.expDate"
+							maxlength="7" required>
+							<span style="color:red" ng-show="urnForm.expDate.$dirty && urnForm.expDate.$invalid">
+                            <span ng-show="urnForm.expDate.$error.required">Exp Date is required</span>
+                          </span>
+					</div>
+					
+					<div class="form-group">
+						<input type="text" class="form-control input-lg"
+							placeholder="CVV" ng-model="card.cvv"
+							maxlength="3" name="CVV" required>
+							<span style="color:red" ng-show="urnForm.CVV.$dirty && urnForm.cardNum.$invalid">
+                            <span ng-show="urnForm.CVV.$error.required">CVV is required</span>
+                          </span>
+					</div>
+					<div class="form-group">
+						<input type="text" class="form-control input-lg"
+							placeholder="Amount" ng-model="card.amount"
+							maxlength="4">
+					</div>
+					<div class="form-group">
+						<button class="btn btn-primary btn-lg btn-block"
+							ng-click="generateUrn(card)">Generate</button>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<div class="col-md-12">
+					<button class="btn" data-dismiss="modal" aria-hidden="true"
+						ng-click="login()">Cancel</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

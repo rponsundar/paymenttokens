@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Vendor Payment Processing</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="js/libs/jquery-2.0.3.min.js"></script>
+
+<script type="text/javascript" src="js/libs/jso.js"></script>
+<script type="text/javascript" type="text/javascript">
+	function getParameterByName(name) {
+		name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+		var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"), results = regex
+				.exec(location.search);
+		return results === null ? "" : decodeURIComponent(results[1].replace(
+				/\+/g, " "));
+	}
+	if (localStorage.getItem("urnlocal") === "" || !localStorage.getItem("urnlocal")) {
+		var urn = getParameterByName('urn');
+		localStorage.setItem("urnlocal", urn);
+	}
+	$(document).ready(function() {
+		// Add configuration for one or more providers.
+		jso_configure({
+			"PaymentServiceHub" : {
+				client_id : "restapp",
+				redirect_uri : "http://localhost:8080/PaymentServiceHub/Vendor.html",
+				authorization : "http://localhost:8080/PaymentServiceHub/oauth/authorize",
+			}
+		});
+		// Perform a data request
+		$.oajax({
+			url : "http://localhost:8080/PaymentServiceHub/psh/tokens",
+			jso_provider : "PaymentServiceHub", // Will match the config identifier
+			jso_scopes : [ "read" ], // List of scopes (OPTIONAL)
+			jso_allowia : true, // Allow user interaction (OPTIONAL, default: false)
+			dataType : 'json',
+			contentType : 'application/json',
+			crossDomain : true,
+			type : 'POST',
+			data : JSON.stringify({
+				"urn" : localStorage.getItem("urnlocal")
+			}),
+			success : function(result) {
+				console.log({
+					response : result
+				});
+				$('#message').text(result.token);
+			}
+		});
+		jso_wipe();
+	});
+</script>
+</head>
+<body>
+	<div>
+		<h1>Payment Token Information</h1>
+		<hr/>
+		<H3> Your Payment token is : <span id="message" /></H3>
+		<h4>
+			<p>Please proceed with Payment processing using the payment token...</p>
+		</h4>
+		
+	</div>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Payment Demo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+<!--  <link href='css/googleapis.css' rel='stylesheet' type='text/css' />-->
+<script type="text/javascript" src="js/libs/jquery-2.0.3.min.js"></script>
+<script type="text/javascript" src="js/libs/jso.js"></script>
+<script type="text/javascript" >
+
+var configData = '';
+	(function loadConfigFile() {
+		$.ajax({
+			url : 'config.json',
+			dataType : 'json',
+			async : false,
+			success : function(data) {
+				configData = data;
+			}
+		});
+	})();
+</script>
+<script type="text/javascript" src="js/pauth.js"></script>
+
+</head>
+<body>
+	<div class="header-top">
+		<div class="wrap">
+			<div class="logo">
+				<a href="index.html"><img src="images/logo.png" alt=""></a>
+			</div>
+			<div class="clear"></div>
+		</div>
+	</div>
+	
+		<br/>
+		
+	<div class="wrap">
+
+	<div id="oauth">
+		<h4 class = "price">Payment Token Information</h4>
+		<hr/>
+		<br/>
+		<H3 class="price"> Your Payment token is : <span id="message" /></H3>
+		<br />
+		<h4>
+			<p>Please proceed with payment processing using the payment token...</p>
+		</h4>
+	    <br/>
+		<button id="payButton" value="Place Order">Place Order</button>
+	</div>
+	<br />
+	<div id="oauthSuccessfull" style="display:none;">
+      <H3 class="price"> Order placed successfully!</H3>
+     </div>
+     </div>
+<script type="text/javascript">
+			$(document)
+					.ready(function() {
+	  					  		 $("#payButton").on('click', function(){
+	  					  		   if($('#oauth').css('display')!='none'){
+	  					  		    $('#oauthSuccessfull').show();//.siblings('div').hide();
+	  					  		    }else if($('#oauthSuccessfull').css('display')!='none'){
+	  					  		        $('#payButton').show();//.siblings('div').hide();
+	  					  		    }
+	  					  		});
+					});
+</script>	
+</body>
+</html>

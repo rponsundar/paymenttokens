@@ -1,0 +1,28 @@
+<div class="container">
+	<h2><span class="label label-info">Vendor Site - Retrieve Payment Token for URN</span></h2>
+
+	</br> </br> </br> </br>
+
+	<form novalidate="novalidate" class="form-horizontal">
+		<div class="control-group">
+			<label class="control-label" for="inputURN">Unique Reference
+				Number:</label>
+
+			<div class="controls">
+				<input type="text" id="inputURN" ng-model="user.urn" />
+			</div>
+		</div>
+
+		<div class="control-group">
+			<div class="controls">
+				<a ng-click="getToken(user)" class="btn btn-small btn-primary">Get
+					Payment Token</a>
+			</div>
+		</div>
+	</form>
+
+	<div ng-show="message != null">
+		<b><span class="label label-primary">Payment Token :</span><span
+			class="label label-success">{{message}}</span></b>
+	</div>
+</div>
