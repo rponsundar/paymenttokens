@@ -195,7 +195,35 @@
 			<version>5.0.1.Final</version>
 		</dependency>
 
-		<!-- Servlet -->
+        <dependency>  
+            <groupId>org.apache.tomcat.embed</groupId>  
+            <artifactId>tomcat-embed-core</artifactId>  
+            <version>8.0.23</version>  
+            <scope>provided</scope>  
+        </dependency>  
+
+        <dependency>  
+            <groupId>org.apache.tomcat.embed</groupId>  
+            <artifactId>tomcat-embed-el</artifactId>  
+            <version>8.0.23</version>  
+            <scope>provided</scope>  
+        </dependency>  
+
+        <dependency>  
+            <groupId>org.apache.tomcat.embed</groupId>  
+            <artifactId>tomcat-embed-logging-juli</artifactId>  
+            <version>8.0.23</version>  
+            <scope>provided</scope>  
+        </dependency>  
+
+        <dependency>  
+            <groupId>org.apache.tomcat.embed</groupId>  
+            <artifactId>tomcat-embed-websocket</artifactId>  
+            <version>8.0.23</version>  
+            <scope>provided</scope>  
+        </dependency>  
+                
+        <!-- Servlet -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
