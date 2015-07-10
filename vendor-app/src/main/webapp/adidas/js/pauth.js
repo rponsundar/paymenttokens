@@ -11,9 +11,9 @@ if (localStorage.getItem("urnlocal") === ""
 	localStorage.setItem("urnlocal", urn);
 }
 if (localStorage.getItem("transactionDetailsLocal") === ""
-	|| !localStorage.getItem("transactionDetailsLocal")) {
-var transactionDetails = getParameterByName('transactionDetails');
-localStorage.setItem("transactionDetailsLocal", transactionDetails);
+		|| !localStorage.getItem("transactionDetailsLocal")) {
+	var transactionDetails = getParameterByName('transactionDetails');
+	localStorage.setItem("transactionDetailsLocal", transactionDetails);
 }
 
 $(document)
@@ -27,52 +27,58 @@ $(document)
 							authorization : configData.authorization
 						}
 					});
-					
 
 					$
 							.oajax({
 								url : "http://localhost:8080/PaymentServiceHub/paymenthub/getpaytoken",
 								jso_provider : "PaymentServiceHub", // Will
-																	// match the
-																	// config
-																	// identifier
+								// match the
+								// config
+								// identifier
 								jso_scopes : [ "read" ], // List of scopes
-															// (OPTIONAL)
+								// (OPTIONAL)
 								jso_allowia : true, // Allow user interaction
-													// (OPTIONAL, default:
-													// false)
+								// (OPTIONAL, default:
+								// false)
 								dataType : 'json',
 								contentType : 'application/json',
 								crossDomain : true,
 								type : 'POST',
 								success : function(result) {
-									localStorage.removeItem("transactionDetailsLocal");
+									localStorage
+											.removeItem("transactionDetailsLocal");
 									console.log({
 										response : result
 									});
 									$('#message').text(result.token);
+									// Perform a session invalidate
+									invalidate();
 								}
 							});
 
-					// Perform a session invalidate
-					$
-							.oajax({
-								url : "http://localhost:8080/PaymentServiceHub/paymenthub/invalidate",
-								jso_provider : "PaymentServiceHub", // Will
-																	// match the
-																	// config
-																	// identifier
-								jso_scopes : [ "read" ], // List of scopes
-															// (OPTIONAL)
-								jso_allowia : true, // Allow user interaction
-													// (OPTIONAL, default:
-													// false)
-								dataType : 'json',
-								contentType : 'application/json',
-								crossDomain : true,
-								type : 'POST'
-							});
-					jso_dump;
-					jso_wipe();
-				});
+					invalidate = function() {
+						$
+								.oajax({
+									url : "http://localhost:8080/PaymentServiceHub/paymenthub/invalidate",
+									jso_provider : "PaymentServiceHub", // Will
+									// match the
+									// config
+									// identifier
+									jso_scopes : [ "read" ], // List of
+									// scopes
+									// (OPTIONAL)
+									jso_allowia : true, // Allow user
+									// interaction
+									// (OPTIONAL, default:
+									// false)
+									dataType : 'json',
+									contentType : 'application/json',
+									crossDomain : true,
+									type : 'POST'
+								});
 
+						jso_dump;
+						jso_wipe();
+					}
+					//setTimeout(invalidate, 3000);
+				});

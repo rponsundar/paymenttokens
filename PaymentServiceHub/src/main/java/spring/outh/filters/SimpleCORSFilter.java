@@ -11,14 +11,18 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 @Component
 public class SimpleCORSFilter implements Filter {
 
+	private static final Logger logger = Logger
+			.getLogger(SimpleCORSFilter.class);
+
 	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
 		
-		System.out.println("filter invoked....");
+		logger.info("SimpleCORSFilter invoked...");
 		HttpServletResponse response = (HttpServletResponse) res;
 		HttpServletRequest request = (HttpServletRequest) req;
 		response.setHeader("Access-Control-Allow-Origin", "*");

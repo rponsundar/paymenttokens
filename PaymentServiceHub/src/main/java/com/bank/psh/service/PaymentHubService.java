@@ -78,4 +78,11 @@ public interface PaymentHubService {
 	 */
 	public ArrayList<CardURNInfoResponseBean> getCardURNInfo (String userId);
 
+	/**
+	 * 
+	 * @param clientId
+	 * @return
+	 */
+	ClientDetails getClientDetails(String clientId);
+
 }

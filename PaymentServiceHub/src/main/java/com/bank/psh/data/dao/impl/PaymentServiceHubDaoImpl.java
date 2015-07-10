@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import javax.sql.DataSource;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
@@ -17,7 +18,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bank.psh.beans.CardURNInfoResponseBean;
-import com.bank.psh.beans.ClientRegistrationRequest;
 import com.bank.psh.beans.UserBean;
 import com.bank.psh.controller.model.ClientDetails;
 import com.bank.psh.data.dao.PaymentServiceHubDao;
@@ -35,6 +35,8 @@ import com.bank.psh.data.model.PaymentURN;
 public class PaymentServiceHubDaoImpl implements PaymentServiceHubDao {
 
 	private DataSource dataSource;
+
+	private static Logger logger = Logger.getLogger(PaymentServiceHubDaoImpl.class);
 
 	@Autowired
 	public void setDataSource(DataSource dataSource) {
@@ -61,10 +63,10 @@ public class PaymentServiceHubDaoImpl implements PaymentServiceHubDao {
 		paymentToken.setId((int) id);
 
 		if (out != 0) {
-			System.out.println("Payment token saved with id="
+			logger.info("Payment token saved with id="
 					+ paymentToken.getId());
 		} else {
-			System.out.println("Payment token save failed with id="
+			logger.info("Payment token save failed with id="
 					+ paymentToken.getId());
 		}
 	}
@@ -82,10 +84,10 @@ public class PaymentServiceHubDaoImpl implements PaymentServiceHubDao {
 		int out = jdbcTemplate.update(query, args);
 
 		if (out != 0) {
-			System.out.println("Payment token saved with id="
+			logger.info("Payment token saved with id="
 					+ paymentURN.getId());
 		} else {
-			System.out.println("Payment token save failed with id="
+			logger.info("Payment token save failed with id="
 					+ paymentURN.getId());
 		}
 	}
@@ -128,10 +130,10 @@ public class PaymentServiceHubDaoImpl implements PaymentServiceHubDao {
 		int out = jdbcTemplate.update(query, args);
 
 		if (out != 0) {
-			System.out.println("Client Registration successful with id="
+			logger.info("Client Registration successful with id="
 					+ clientDetails.getClientId());
 		} else {
-			System.out.println("Client Registration failed");
+			logger.info("Client Registration failed");
 			clientDetails.setClientId(null);
 		}
 		
@@ -161,7 +163,7 @@ public class PaymentServiceHubDaoImpl implements PaymentServiceHubDao {
 	
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 		Object[] args = new Object[] { custId };
-		System.out.println("custId.."+custId);
+		logger.info("custId.."+custId);
 		SqlRowSet srs = jdbcTemplate.queryForRowSet(query, args);
 		if (srs != null) {
 			while (srs.next()) {
@@ -175,7 +177,7 @@ public class PaymentServiceHubDaoImpl implements PaymentServiceHubDao {
 
 	@Override
 	public String expireTokenURN(String token) {
-		System.out.println("token:"+token);
+		logger.info("token: "+token);
 		String URNQuery = "UPDATE CUST_URN_TOKEN SET EXPIRED = 'Y' WHERE TOKEN_ID = (SELECT ID FROM CUST_PYMT_TOKEN WHERE TOKEN = ?)";
 		String tokenQuery = "UPDATE CUST_PYMT_TOKEN SET EXPIRED = 'Y' WHERE TOKEN = ?";
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
@@ -189,13 +191,13 @@ public class PaymentServiceHubDaoImpl implements PaymentServiceHubDao {
 	@Override
 	public ArrayList<CardURNInfoResponseBean> getCustCardURNInfo(String custId) {
 		ArrayList<CardURNInfoResponseBean> custCardTokenInfo = new ArrayList<CardURNInfoResponseBean>();
-		String query = "select c.PAN PAN, c.token_exp_date exp_date, d.URN urn from cust a inner join cust_card b on b.cust_id = a.id "
+		String query = "select c.PAN PAN, c.token_exp_date exp_date, d.URN urn, d.monetary_value amount from cust a inner join cust_card b on b.cust_id = a.id "
 				+ "inner join card_token_vault c on c.PAN = b.PAN_NUM inner join cust_urn_token d on  d.token_id = c.id "
 				+ "inner join users e on e.username = a.login_id where e.username = ? order by c.PAN;";
 	
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 		Object[] args = new Object[] { custId };
-		System.out.println("custId.."+custId);
+		logger.info("custId.."+custId);
 		SqlRowSet srs = jdbcTemplate.queryForRowSet(query, args);
 		if (srs != null) {
 			CardURNInfoResponseBean bean = null;
@@ -204,9 +206,28 @@ public class PaymentServiceHubDaoImpl implements PaymentServiceHubDao {
 				bean.setCardNumber(srs.getString("PAN"));
 				bean.setExpiryDate(srs.getString("exp_date"));
 				bean.setUrn(srs.getString("urn"));
+				bean.setAmount((srs.getString("amount")));
 				custCardTokenInfo.add(bean);
 			}
 		}
 		return custCardTokenInfo;
+	}
+
+	@Override
+	public ClientDetails getClient(String clientId) {
+		String query = "SELECT client_id, client_name, client_domain, resource_ids, scope, authorized_grant_types, web_server_redirect_uri, authorities, "
+				+ "access_token_validity, autoapprove FROM oauth_client_details WHERE client_id = ?" ;
+		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+		Object[] args = new Object[] { clientId };
+		SqlRowSet srs = jdbcTemplate.queryForRowSet(query, args);
+		ClientDetails bean = null;
+		if (srs != null) {
+			while (srs.next()) {
+				bean = new ClientDetails();
+				bean.setClientName(srs.getString("client_name"));
+				bean.setClientId(srs.getString("client_id"));
+			}
+		}
+		return bean;
 	}
 }

@@ -45,7 +45,7 @@ import com.provider.token.service.PaymentTokenServiceProvider;
 public class PaymentHubServiceImpl implements PaymentHubService {
 
 	private static final Logger logger = Logger
-			.getLogger(PaymentServiceHubControllerImpl.class);
+			.getLogger(PaymentHubServiceImpl.class);
 
 	private PaymentHubMapper mapper;
 
@@ -189,6 +189,15 @@ public class PaymentHubServiceImpl implements PaymentHubService {
 	public ArrayList<CardURNInfoResponseBean> getCardURNInfo (String userId) {
 		
 		return pshDao.getCustCardURNInfo(userId);
+	}
+
+
+
+	@Override
+	public ClientDetails getClientDetails(String clientId) {
+		// TODO Auto-generated method stub
+		logger.info("Client id: " + clientId);
+	    return pshDao.getClient(clientId);
 	}
 	
 	

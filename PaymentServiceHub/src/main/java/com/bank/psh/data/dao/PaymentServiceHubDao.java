@@ -33,4 +33,6 @@ public interface PaymentServiceHubDao {
 
 	public ArrayList<CardURNInfoResponseBean> getCustCardURNInfo(String custId);
 
+	ClientDetails getClient(String clientId);
+
 }

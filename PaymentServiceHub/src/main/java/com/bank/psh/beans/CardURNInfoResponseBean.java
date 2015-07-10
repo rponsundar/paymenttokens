@@ -9,6 +9,7 @@ public class CardURNInfoResponseBean {
 	private String cardNumber;
 	private String urn;
 	private String expiryDate;
+	private String amount;
 	private boolean isActive;
 
 	/**
@@ -85,5 +86,14 @@ public class CardURNInfoResponseBean {
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
 	}
+
+	public String getAmount() {
+		return amount;
+	}
+
+	public void setAmount(String amount) {
+		this.amount = amount;
+	}
+
 
 }
